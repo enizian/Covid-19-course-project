@@ -198,8 +198,8 @@ i = which(population$Location == "State of Palestine")
 population$Location[i] = "occupied Palestinian territory, including east Jerusalem"
 covid_gdp = merge(population, covid_gdp, by.x = "Location", by.y = "country")
 
-covid_gdp$prp_case_increase = unlist(c(covid_gdp[5] / covid_gdp[2]))
-covid_gdp$gdp_per_capita = as.numeric(unlist(covid_gdp[3])) / covid_gdp[2]
+covid_gdp$prp_case_increase = unlist(c(covid_gdp[5] / (1000*covid_gdp[2]))) #Population dataset is measured in 1000s
+covid_gdp$gdp_per_capita = as.numeric(unlist(covid_gdp[3])) / (1000*covid_gdp[2])
 #covid_gdp = data.frame(covid_gdp[,c(1,4,6,7)])
 
 ######## 
