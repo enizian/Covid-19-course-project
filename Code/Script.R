@@ -4,7 +4,6 @@ original_covid_data <- read_csv("https://covid19.who.int/WHO-COVID-19-global-dat
 covid <- read_csv("https://covid19.who.int/WHO-COVID-19-global-data.csv")
 gdp <- read.csv(file = 'gdp.csv', header = FALSE)
 
-
 #DATA PREPROCESSIG 
 
 country_names = c()
@@ -182,3 +181,12 @@ get.quarter.info = function(covid){
 Qcovid = get.quarter.info(covid = covid)
 
 ######## USE 'gdp' AND 'Qcovid' DATAFRAMES 
+
+copy_Qcovid = Qcovid
+covid_gdp = gdp[1:4]
+covid_gdp = covid_gdp %>% filter(grepl("2020", Latest_data_from, fixed = TRUE)) #data from 2020 only
+covid_gdp = merge(copy_Qcovid, covid_gdp, by.x = c("country", "quarter"), by.y = c("Countries", "Latest_data_from"))
+covid_gdp$case_increase = covid_gdp[4] - covid_gdp[3] #case increase from quarter with most recently available gdp
+covid_gdp = covid_gdp[,c(1, 9:11)] #variables: Country, Latest gdp value, Change in gdp, Total increase in cases
+
+######## `covid_gdp` has all variables for ANOVA (though we should probably find proportions with population data)
